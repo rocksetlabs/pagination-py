@@ -2,7 +2,7 @@
   "api_server": null,
   "api_key": null,
   "batch_size": 100000,
-  "threads": 10,
+  "threads": 20,
   "workspace": "taxi",
   "queryLambda": "pagination_api",
   "print_results": false,

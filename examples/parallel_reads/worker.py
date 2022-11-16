@@ -30,7 +30,7 @@ class Worker():
         if self.print_results:
             print(json.dumps(self.results['results'], indent=3))
         else:
-            print("num_results: {}".format(len(self.results['results'])))
+            print("num_results: {}, cursor: {}".format(len(self.results['results']), self.cursor))
 
         if self.return_end_cursor:
             self.result = self.results['pagination']['next_cursor']
