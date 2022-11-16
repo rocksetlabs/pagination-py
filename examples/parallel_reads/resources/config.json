@@ -5,6 +5,7 @@
   "threads": 10,
   "workspace": "taxi",
   "queryLambda": "pagination_api",
+  "print_results": false,
   "parameters": [
     {
       "name": "name",

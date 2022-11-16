@@ -111,7 +111,8 @@ class Main():
                             x * mini_batch_size,
                             mini_batch_size,
                             self.cursor,
-                            last))
+                            last,
+                            self.config['print_results']))
             try:
                 with Pool(processes=self.config['threads']) as pool:
                     results = pool.starmap(Worker, arr)

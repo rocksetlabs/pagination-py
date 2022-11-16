@@ -2,7 +2,7 @@ import json
 import requests
 
 class Worker():
-    def __init__(self, thread_id, headers, query_id, api_key, api_server, offset, num_docs, cursor, return_end_cursor):
+    def __init__(self, thread_id, headers, query_id, api_key, api_server, offset, num_docs, cursor, return_end_cursor, print_results):
         self.thread_id = thread_id
         self.headers = headers
         self.query_id = query_id
@@ -12,6 +12,7 @@ class Worker():
         self.num_docs = num_docs
         self.cursor = cursor
         self.return_end_cursor = return_end_cursor
+        self.print_results = print_results
         self.run()
 
     def run(self):
@@ -26,10 +27,12 @@ class Worker():
           print(f'Failed to execute query. Code: {g.status_code}. {g.reason}. {g.text}')
           sys.exit(0)
         self.results = g.json()
-        print(json.dumps(self.results, indent=3))
+        if self.print_results:
+            print(json.dumps(self.results['results'], indent=3))
+        else:
+            print("num_results: {}".format(len(self.results['results'])))
 
         if self.return_end_cursor:
-            # self.result = "bananas"
             self.result = self.results['pagination']['next_cursor']
         else:
             self.result = None
