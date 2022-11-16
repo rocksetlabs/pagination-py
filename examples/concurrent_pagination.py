@@ -17,11 +17,11 @@ def config_rockset():
     else:
         sys.exit(
         '''
-        Missing environment variable ROCKSET_API. Please define before running again. 
+        Missing environment variable ROCKSET_API. Please define before running again.
         See https://rockset.com/docs/rest-api/ for more information
         '''
         )
-    
+
     return headers, api
 
 #a simple query
@@ -44,13 +44,13 @@ select * from tweets limit 10;
 def run_query(sql, headers, api):
 
     data = {
-        "sql" : 
+        "sql" :
         {
             "query" : sql,
             "paginate": True,
             "initial_paginate_response_doc_count": 0
         },
-        "async_options" : 
+        "async_options" :
         {
             "client_timeout_ms": 1000, # 1 second
             "timeout_ms": 1800000,    # 30 minutes
@@ -100,11 +100,11 @@ def create_task_map(doc_count, tasks):
 def task(start, end, headers, api, query_id):
     #set this as appropiate, low number by default for testing
     max_page_size = 2
-    
+
     docs = 0
     #get results until we are at the end offset
     while(start < end):
-        diff = end - start 
+        diff = end - start
         if(diff >= max_page_size):
             docs = max_page_size
         else:
@@ -128,12 +128,12 @@ def task(start, end, headers, api, query_id):
 if __name__ == "__main__":
     #default number of tasks
     tasks = 3
-    
+
     (headers, api) = config_rockset()
     response = run_query(sql, headers, api)
     doc_count, query_id = parse_reponse(response)
     task_map = create_task_map(doc_count, tasks)
-    
+
     #create an array for starmap to pass parameters to each task in the pool
     arr = []
     for x in range(tasks):
@@ -145,4 +145,3 @@ if __name__ == "__main__":
             pool.starmap(task, arr)
     except Exception as e:
         print("Error: {}".format(e.args))
-    
